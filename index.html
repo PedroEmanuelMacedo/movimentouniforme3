@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimento Retilíneo Uniforme</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #87CEEB;
+        }
+        #carro {
+            width: 50px;
+            height: 30px;
+            background-color: red;
+            position: absolute;
+            top: 100px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="carro"></div>
+    <button onclick="iniciarMovimento()">Iniciar Movimento</button>
+    <button onclick="pararMovimento()">Parar Movimento</button>
+    <div id="info"></div>
+    <script>
+        let posicao = 0; // posição em metros
+        const velocidadeMetrosPorSegundo = 5; // metros por segundo
+        let intervalo;
+        let posicaoInicial = 0;
+        let posicaoFinal = 0;
+        let tempoInicial = 0;
+        let tempoFinal = 0;
+
+        function iniciarMovimento() {
+            const carro = document.getElementById("carro");
+            posicaoInicial = posicao;
+            tempoInicial = Date.now();
+            intervalo = setInterval(() => {
+                if (posicao < window.innerWidth / 20) { // janela em metros
+                    posicao += velocidadeMetrosPorSegundo * 0.02; // convertendo para intervalo de 20ms
+                    carro.style.left = (posicao * 20) + "px"; // convertendo metros para pixels
+                } else {
+                    clearInterval(intervalo);
+                }
+            }, 20); // Atualiza a cada 20 ms
+        }
+
+        function pararMovimento() {
+            clearInterval(intervalo);
+            posicaoFinal = posicao;
+            tempoFinal = Date.now();
+            const tempoDecorrido = (tempoFinal - tempoInicial) / 1000; // em segundos
+            const distanciaM = posicaoFinal - posicaoInicial;
+            const info = `Posição Inicial: ${posicaoInicial.toFixed(2)}m, Posição Final: ${posicaoFinal.toFixed(2)}m, Distância: ${distanciaM.toFixed(2)}m, Velocidade: ${velocidadeMetrosPorSegundo.toFixed(2)}m/s, Tempo: ${tempoDecorrido.toFixed(2)} segundos`;
+            document.getElementById("info").innerText = info;
+        }
+    </script>
+</body>
+</html>
